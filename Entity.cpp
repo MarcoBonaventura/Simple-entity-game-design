@@ -12,9 +12,9 @@
 #define Maximum(a, b) ((a > b) ? a : b)
 #define Minimum(a, b) ((a < b) ? a : b)
 
-// in addition to android/log.h we use SDL_Log() logger
-#include <android/log.h>	// for logcat
-#define  LOG_TAG "SDL/APP"  // the key to filter
+// in addition to android/log.h we use SDL_Log() logger too
+#include <android/log.h>		// for logcat
+#define  LOG_TAG "SDL/APP"  	// the key to filter
 
 
 int WWIDTH;		// global extern var in define.h
@@ -66,17 +66,15 @@ Entity::Entity() {
     Col_X = 0;
     Col_Y = 0;
 
-    // gets Window from another class, non included here
+    // gets Window from another class (not included here)
     Window = AppStateGame::GetInstance()->GetWindow();
 
-	// gets Renderer from another class, non included here
+    // gets Renderer from another class (not included here)
     entityRenderer = AppStateGame::GetInstance()->GetRenderer();
-
 
 }
 
 Entity::~Entity() {
-
     
 }
 
@@ -116,90 +114,52 @@ void Entity::OnLoop() {
 
     SDL_Log("Entity loop");
 
-    /*
-    //Anim_Control.OnAnimate();
-
-    //Player not Moving
-    if(MoveLeft == false && MoveRight == false && MoveUp == false && MoveDown == false)
-    {
-        StopMove();
-    }
-
-    //We're Moving
-    if(MoveLeft)    { AccelX = -0.5;    }
-    if(MoveRight)   { AccelX = 0.5;     }
-    if(MoveUp)      { AccelY = -0.5;    }
-    if(MoveDown)    { AccelY = 0.5;     }
-
-
-    SpeedX += AccelX * CFPS::FPSControl.GetSpeedFactor();
-    SpeedY += AccelY * CFPS::FPSControl.GetSpeedFactor();
-
-
-    if(SpeedX > MaxSpeedX)  SpeedX =  MaxSpeedX;
-    if(SpeedX < -MaxSpeedX) SpeedX = -MaxSpeedX;
-    if(SpeedY > MaxSpeedY)  SpeedY =  MaxSpeedY;
-    if(SpeedY < -MaxSpeedY) SpeedY = -MaxSpeedY;
-
-
-    OnAnimate();
-
-    OnMove(SpeedX, SpeedY);
-
-    Xp = X;
-    Yp = Y;
-
-    //EntityDEL();
-
-    counter++;
-     */
-
 }
 
 
 //==============================================================================
-void CEntity::OnMove(float MoveX, float MoveY) {
+void Entity::OnMove(float MoveX, float MoveY) {
 
     
 }
 
-void CEntity::StopMove() {
+void Entity::StopMove() {
 
 	
 }
 
-void CEntity::StopMoveX() {
+void Entity::StopMoveX() {
 
 	
 }
 
-void CEntity::StopMoveY() {
+void Entity::StopMoveY() {
 
 
 }
 
-void CEntity::OnRender() {
+void Entity::OnRender() {
 
 
 }
 
-void CEntity::OnCleanup() {
+void Entity::OnCleanup() {
 
 
 }
 
-void CEntity::OnAnimate() {
+void Entity::OnAnimate() {
 
     
 }
 
-bool CEntity::OnCollision(CEntity *Entity) {
+bool Entity::OnCollision(CEntity *Entity) {
 
     return true;
 
 }
 
-SDL_Rect CEntity::GetBounds() {
+SDL_Rect Entity::GetBounds() {
 
     SDL_Rect bounds;
     bounds.x = (Sint16)(X);
@@ -212,7 +172,7 @@ SDL_Rect CEntity::GetBounds() {
 }
 
 
-SDL_Rect CEntity::NormalizeBounds(const SDL_Rect& rect) {
+SDL_Rect Entity::NormalizeBounds(const SDL_Rect& rect) {
 
     SDL_Rect normalized;
 
@@ -225,7 +185,7 @@ SDL_Rect CEntity::NormalizeBounds(const SDL_Rect& rect) {
 
 }
 
-SDL_Rect CEntity::Intersection(const SDL_Rect& boundsA, const SDL_Rect& boundsB) {
+SDL_Rect Entity::Intersection(const SDL_Rect& boundsA, const SDL_Rect& boundsB) {
 
     int x1 = Maximum(boundsA.x, boundsB.x);
     int y1 = Maximum(boundsA.y, boundsB.y);
@@ -253,7 +213,7 @@ SDL_Rect CEntity::Intersection(const SDL_Rect& boundsA, const SDL_Rect& boundsB)
 
 
 /* Old collision funcs, just for info...
-bool CEntity::CheckCollision(CEntity *Entity) {
+bool Entity::CheckCollision(CEntity *Entity) {
 
 
     if ( this->Type != Entity->Type &&
@@ -372,7 +332,7 @@ bool CEntity::CheckCollision(CEntity *Entity) {
 
 
 
-bool CEntity::GetAlphaXY(CEntity *Entity, int x, int y) {
+bool Entity::GetAlphaXY(CEntity *Entity, int x, int y) {
 
     int bpp = TextureBank::Get(entityTexture)->bpp;
 
@@ -418,7 +378,7 @@ bool CEntity::GetAlphaXY(CEntity *Entity, int x, int y) {
 
 
 // new collision detection funcs
-void CEntity::CheckCollision(CEntity *Entity) {
+void Entity::CheckCollision(CEntity *Entity) {
 
     if ( this != Entity && this->Dead == false && Entity->Dead == false && Entity->Flags ^ ENTITY_FLAG_MAPONLY )
     {
@@ -538,16 +498,16 @@ void CEntity::CheckCollision(CEntity *Entity) {
                         char TempA[255];
                         int Temp1 = EntityCol.EntityA->Type;
                         int n1 = sprintf(TempA, "%d", Temp1);
-                        //SDL_Log("EntityA.x: %d",EntityCol.EntityA->X);
-                        //SDL_Log("EntityA.y: %d",EntityCol.EntityA->Y);
+                        SDL_Log("EntityA.x: %d",EntityCol.EntityA->X);
+                        SDL_Log("EntityA.y: %d",EntityCol.EntityA->Y);
 
                         char TempB[255];
                         int Temp2 = EntityCol.EntityB->Type;
                         int n2 = sprintf(TempB, "%d", Temp2);
-                        //SDL_Log("EntityB.x: %d",EntityCol.EntityB->X);
-                        //SDL_Log("EntityB.y: %d",EntityCol.EntityB->Y);
+                        SDL_Log("EntityB.x: %d",EntityCol.EntityB->X);
+                        SDL_Log("EntityB.y: %d",EntityCol.EntityB->Y);
 
-                        //SDL_Log("EntityColEnd");
+                        SDL_Log("EntityColEnd");
 
                         TempA[255];
                         Temp1 = EntityCol.EntityA->Size;
@@ -574,13 +534,13 @@ void CEntity::CheckCollision(CEntity *Entity) {
 
 }
 
-void CEntity::CollisionLoop() {
+void Entity::CollisionLoop() {
 
     //LEAVE BLANK!!!!
 
 }
 
-void CEntity::shiftColliders() {
+void Entity::shiftColliders() {
 
 	//LEAVE BLANK!!!!
 
@@ -593,53 +553,53 @@ std::vector<SDL_Rect>& CEntity::getColliders() {
 
 }
 
-bool CEntity::Jump() {
+bool Entity::Jump() {
 
     return true;
 
 }
 
 
-void CEntity::ScoreInc() {
+void Entity::ScoreInc() {
 
 }
 
 
-void CEntity::OnFire() {
+void Entity::OnFire() {
 
 }
 
-bool CEntity::canFIRE() {}
+bool Entity::canFIRE() {}
 
-bool CEntity::booleanFIRE() {}
+bool Entity::booleanFIRE() {}
 
-void CEntity::IA() {
+void Entity::IA() {
 
 }
 
 
-int CEntity::GetX() {
+int Entity::GetX() {
 
     return Xp;
 
 }
 
-int CEntity::GetY() {
+int Entity::GetY() {
 
     return Yp;
 
 }
 
-int CEntity::EnemyGetX() {}
-int CEntity::EnemyGetY() {}
+int Entity::EnemyGetX() {}
+int Entity::EnemyGetY() {}
 
-float CEntity::PlayerGetX() {}
-float CEntity::PlayerGetY() {}
+float Entity::PlayerGetX() {}
+float Entity::PlayerGetY() {}
 
-int CEntity::GetEntityMoving() {}
+int Entity::GetEntityMoving() {}
 
 
-CEntity* CEntity::GetEntity(int temp_ID) {
+Entity* Entity::GetEntity(int temp_ID) {
 
     if (EntityMap.find(temp_ID) == EntityMap.end())
     {
@@ -654,7 +614,7 @@ CEntity* CEntity::GetEntity(int temp_ID) {
 
 
 //-----------------------------------------------------------------------------
-void CEntity::EntityDEL() {
+void Entity::EntityDEL() {
 
     int temp_ID;
 
