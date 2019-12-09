@@ -50,7 +50,7 @@ enum eSize
     ENTITY_SIZE_NONE		= 12
 };
 
-// this flag is for phisics interaction
+// this flag is for physics interaction
 enum eFlag
 {
     ENTITY_FLAG_NONE        = 0,
