@@ -47,25 +47,20 @@ Entity::Entity() {
     ib = 0;
     kb = 0;
 
-    counter     = 0;
+    counter = 0;
 
-    MoveLeft  = false;
-    MoveRight = false;
-    MoveUp    = false;
-    MoveDown  = false;
-
+    MoveLeft = MoveRight = MoveUP = MoveDown = false;
+    
     boom      = false;
     Dead      = false;
 
     SpeedX = 0;
     SpeedY = 0;
 
-    AccelX = 0;
-    AccelY = 0;
-
-    Col_X = 0;
-    Col_Y = 0;
-
+    AccelX = AccelY = 0;
+    
+    Col_X = Col_Y = 0;
+    
     // gets Window from another class (not included here)
     Window = AppStateGame::GetInstance()->GetWindow();
 
@@ -85,27 +80,6 @@ bool Entity::OnLoad(char *File, int Width, int Height, int MaxFrames) {
 	this->Height = Height;
 
 	return true;
-
-}
-
-bool Entity::OnLoad(char *File, int Width, int Height) {
-
-	this->Width = Width;
-	this->Height = Height;
-
-	return true;
-
-}
-
-bool Entity::OnLoad(char *File, int RGBalpha) {
-
-    return true;
-
-}
-
-bool Entity::OnLoad(char *File) {
-
-    return true;
 
 }
 
@@ -377,7 +351,7 @@ bool Entity::GetAlphaXY(CEntity *Entity, int x, int y) {
 */
 
 
-// new collision detection funcs
+// new collision detection funcs --- can be improved...
 void Entity::CheckCollision(CEntity *Entity) {
 
     if ( this != Entity && this->Dead == false && Entity->Dead == false && Entity->Flags ^ ENTITY_FLAG_MAPONLY )
@@ -493,30 +467,6 @@ void Entity::CheckCollision(CEntity *Entity) {
 
                         EntityCol.EntityA = this;
                         EntityCol.EntityB = Entity;
-
-                        /** just for debug
-                        char TempA[255];
-                        int Temp1 = EntityCol.EntityA->Type;
-                        int n1 = sprintf(TempA, "%d", Temp1);
-                        SDL_Log("EntityA.x: %d",EntityCol.EntityA->X);
-                        SDL_Log("EntityA.y: %d",EntityCol.EntityA->Y);
-
-                        char TempB[255];
-                        int Temp2 = EntityCol.EntityB->Type;
-                        int n2 = sprintf(TempB, "%d", Temp2);
-                        SDL_Log("EntityB.x: %d",EntityCol.EntityB->X);
-                        SDL_Log("EntityB.y: %d",EntityCol.EntityB->Y);
-
-                        SDL_Log("EntityColEnd");
-
-                        TempA[255];
-                        Temp1 = EntityCol.EntityA->Size;
-                        n1 = sprintf(TempA, "%d", Temp1);
-
-                        TempB[255];
-                        Temp2 = EntityCol.EntityB->Size;
-                        n2 = sprintf(TempB, "%d", Temp2);
-                        */
 
                         CEntityCol::EntityColList.push_back(EntityCol);
 
