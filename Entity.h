@@ -233,15 +233,14 @@ class Entity {
 	Entity();
 		
 		virtual ~CEntity();
-
+		
+		/* old Windows funcs, in Android replaced by Android Assets Manager, just for documentation...
         virtual bool OnLoad(char* File, int Width, int Height, int MaxFrames);
-
         virtual bool OnLoad(char* File, int Width, int Height);
-
         virtual bool OnLoad(char* File, int RGBalpha);
-
         virtual bool OnLoad(char* File);
-
+		*/
+	
         virtual void OnLoop();		
 
         virtual void OnRender();
