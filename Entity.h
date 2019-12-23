@@ -27,9 +27,9 @@ enum eType
     ENTITY_TYPE_PARTICLE    = 5,
     ENTITY_TYPE_MyBOMB      = 6,
     ENTITY_TYPE_MEDAL       = 7,
-	ENTITY_TYPE_GAMMARAY	= 8,
+    ENTITY_TYPE_GAMMARAY    = 8,
     ENTITY_TYPE_LASER       = 9,
-    ENTITY_TYPE_ENEMY		= 10
+    ENTITY_TYPE_ENEMY	    = 10
 };
 
 // size of entity (for collision detection)
@@ -71,22 +71,22 @@ enum eFlag
 // how to move the entity
 enum eMove
 {
-    BEZIER 		= 0,
+    BEZIER 			= 0,
     LOGARITMIC 		= 1,
-    BEZIER_BOSS     	= 2,
+    BEZIER_BOSS     = 2,
     MOVE_DX 		= 3,
     MOVE_SX 		= 4,
     MOVE_DOWN 		= 5,
     ESCAPE_DX 		= 6,
     ESCAPE_SX 		= 7,
-    ROTATE 		= 8,
+    ROTATE 			= 8,
     FALLING 		= 9,
-    SNAKE 		= 10,
-    PYRAMID         	= 11,
-    DIAMOND         	= 12,
-    GRID            	= 13,
+    SNAKE 			= 10,
+    PYRAMID        	= 11,
+    DIAMOND        	= 12,
+    GRID           	= 13,
     ASTEROID       	= 14,
-    NONE            	= 15
+    NONE           	= 15
 };
 
 // entity enemy fire mode
@@ -148,90 +148,81 @@ class Entity {
         SDL_Window*     Window;		
         SDL_Surface*    PrimarySurface;
 		
-	float       SpeedX, SpeedY;
+		int      	X, X1, X2;
+        int         Y, Y1, Y2;
+	
+		int        	Width, W2;		// for SDL2 rendering: Width for destination SDL_Rect, W2 for source SDL_Rect
+        int         Height, H2;		// as like as Width/W2 properties
+	
+		float       SpeedX, SpeedY;	
         float       AccelX, AccelY;
         float	    kAcc;
 
+		static int      Xp, Yp;
 
     public:
 	
-	static std::vector<CEntity*>EntityList;			// the main container of every entity
-	static std::map<int, CEntity*> EntityMap;		// 
-	static std::map<int, CEntity*> TargetEnemyMap;
+		static std::vector<CEntity*>EntityList;			// the main container of every entity
+		static std::map<int, CEntity*> EntityMap;		// jus the enemy entity 
+		static std::map<int, CEntity*> TargetEnemyMap;	// for smart rockets pointing entity
 
-        //static const int DOT_VEL = 1;
-
-        std::string     entityTexture;
+       	std::string     entityTexture;
 
         bool collision;
 
-	// the unique ID for every entity
-	int ID, BRO;
-	static int current_ID;
-	static int counter_BRO;
+		// once ID for every entity
+		int ID, BRO;
+		static int current_ID;
+		static int counter_BRO;
 
-        int             X, X1, X2;
-        int             Y, Y1, Y2;
+        int   	mx, my;
+        int     ib, kb;
 
-        int             mx, my;
+        int 	selected;
 
-        int             ib, kb;
+        int     counter;
+		int		Laser_time;
+		int		targetID;
 
-        int             *XXP = &X;
-        int             *YYP = &Y;
-        int             *pX2 = &X2;
-        int             *pY2 = &Y2;
-
-        static int      Xp, Yp;
-
-        int             Width, W2;		// for SDL2 rendering: Width for destination SDL_Rect, W2 for source SDL_Rect
-        int             Height, H2;		// as like as Width/W2 properties
-
-        int 		selected;
-
-        int             counter;
-	int		Laser_time;
-	int		targetID;
-
-        int             PlayerScore;
-        int             playerHonor;
-        int             medalHonor;
-        int             medalReward;
-	int		stamina;
+        int     PlayerScore;
+        int     playerHonor;
+        int     medalHonor;
+        int     medalReward;
+		int		stamina;
 
         //-------------------------
         //SDL2 collision properties
         int mPosX, mPosY;
         //The velocity of the dot
-	int mVelX, mVelY;
+		int mVelX, mVelY;
         
-	// a container for every entity pixel to detect a collision 
-	std::vector<SDL_Rect> mColliders;
-	int r;
+		// a container for every entity pixel to detect a collision 
+		std::vector<SDL_Rect> mColliders;
+		int 	r;
         	
-        int         AnimState;
+        int     AnimState;
 
-        int         Sound_explSX, Sound_PlayerFire, Sound_PlayerXPL;
+        int     Sound_explSX, Sound_PlayerFire, Sound_PlayerXPL;
 
-        bool        MoveLeft, MoveRight, MoveUp, MoveDown;
-        bool        boom;
+        bool    MoveLeft, MoveRight, MoveUp, MoveDown;
+        bool    boom;
 
-        char        *anim_filename;		// sprite made-up by 14 frames 
+        char    *anim_filename;		// sprite made-up by 14 frames 
 
-        int         Type, Size, Flags, Move;
-        eMove       motion;
+        int     Type, Size, Flags, Move;
+        eMove   motion;
 		
-	int	    Pattern;
-        int         EnemyFireMode;
+		int	    Pattern;
+        int     EnemyFireMode;
 
-        bool        Dead = false;
+        bool    Dead = false;
         
-        int         shot, fire, hit;
-        int         TimeStart;
-        int         triggerFIRE;
+        int     shot, fire, hit;
+        int     TimeStart;
+        int     triggerFIRE;
         SDL_Point   EnemyLimit;
 
-        Vector      position;
+        Vector  	position;
         Vector      origin;
 
    
@@ -241,7 +232,7 @@ class Entity {
 
 	Entity();
 		
-	virtual ~CEntity();
+		virtual ~CEntity();
 
         virtual bool OnLoad(char* File, int Width, int Height, int MaxFrames);
 
@@ -261,11 +252,11 @@ class Entity {
 
         virtual void OnAnimate();
 
-	virtual bool OnCollision(CEntity* Entity);		// collision detected, here we select what to do
+		virtual bool OnCollision(CEntity* Entity);		// collision detected, here we select what to do
 
-	virtual void CollisionLoop();		// check entity collision
+		virtual void CollisionLoop();		// check entity collision
 
-	std::vector<SDL_Rect>& getColliders();
+		std::vector<SDL_Rect>& getColliders();
         virtual void shiftColliders();
 
         virtual void OnFire();
@@ -275,35 +266,35 @@ class Entity {
 
         virtual void IA();		// enetity enemie's "mind"
 
-	static int GetX();
-	static int GetY();
+		static int GetX();
+		static int GetY();
 
-	static CEntity* GetEntity(int temp_ID);
+		static CEntity* GetEntity(int temp_ID);
 
-	int GetEntityMoving();
+		int GetEntityMoving();
 
-	virtual int		EnemyGetX();
-	virtual int		EnemyGetY();
+		virtual int		EnemyGetX();
+		virtual int		EnemyGetY();
 
-	virtual float	PlayerGetX();
-	virtual float 	PlayerGetY();
+		virtual float	PlayerGetX();
+		virtual float 	PlayerGetY();
 
-	bool    Jump();
+		bool    Jump();
 
-	bool    Crash();
+		bool    Crash();
 
-	void    ScoreInc();
+		void    ScoreInc();
 
     public:
 
         void    OnMove(float MoveX, float MoveY);
 
         void    StopMove();
-	void    StopMoveX();
-	void    StopMoveY();
+		void    StopMoveX();
+		void    StopMoveY();
 
 
-	/* old funcs for pixel collision detection (not used anymore) 
+		/* old funcs for pixel collision detection (not used anymore) 
         SDL_Rect GetBounds();
 
         SDL_Rect NormalizeBounds(const SDL_Rect& rect);
@@ -318,7 +309,7 @@ class Entity {
         bool CheckCollision(std::vector<SDL_Rect>& a, std::vector<SDL_Rect>& b);
         void CheckCollision(CEntity* Entity);
         bool GetAlphaXY(CEntity* Entity, int x, int y);
-	*/
+		*/
 
 };
 
@@ -327,17 +318,17 @@ class CEntityCol {
 
     public:
         
-	static std::vector<CEntityCol>  EntityColList;
+		static std::vector<CEntityCol>  EntityColList;
 
     public:
         
-	CEntity *EntityA;
+		CEntity *EntityA;
         CEntity *EntityB;
 
 
     public:
         
-	CEntityCol();
+		CEntityCol();
 };
 
 
